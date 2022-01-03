@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/683b4b40e3.js" crossorigin="anonymous"></script>
+</head>
+<style>
+    #nav{
+        height: 70px;
+        width: 95%;
+        background-color: black;
+        color: yellow;
+        display: flex;
+        margin: auto;
+        border-radius: 20px;
+        margin-bottom: 30px;
+    }
+    #nav>p{
+        font-size: 25px;
+        padding-left: 30px;
+    }
+    #display{
+        display: grid;
+        grid-template-columns: repeat(2, 40%);
+        grid-gap: 30px;
+        margin-left: 100px;
+    }
+    #display>div{
+        padding: 20px;
+        height: 350px;
+        width: 60%;
+        border-radius: 30px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    }
+    img{
+        height: 70%;
+    }
+    i{
+        padding-left: 800px;
+        padding-top: 25px;
+        font-size: 20px;
+    }
+</style>
+<body style="background-color: rgb(39, 94, 177);">
+    <div id="nav">
+        <p>Menu</p>
+        <p>Login</p>
+        <p>SignUp</p>
+        <i class="fas fa-cart-plus" id="add" style="color: red;">0</i>
+    </div>
+    <div id="display">
+       <!-- Enter Dish: <input type="text" id="dishname">
+       <button onclick="searchDish()">Search</button> -->
+    </div>
+</body>
+</html>
+
+<script>
+    let cart= JSON.parse(localStorage.getItem("cart")) || [];
+    let display= document.querySelector("#display");
+    async function searchDish(){
+    var url="https://www.themealdb.com/api/json/v1/1/search.php?f=a";
+
+    try{
+        var x= await fetch(url);
+    var data= await x.json();
+    console.log("RES:", data);
+    getData(data.meals);
+    }
+    catch(err){
+        console.log("Error found", err)
+    }    
+    }
+    searchDish();
+
+    function getData(arr){
+        arr.map(function(product){
+            // display.textContent="";
+        let div= document.createElement("div");
+
+        let img= document.createElement("img");
+        img.src= product.strMealThumb;
+
+        let p1= document.createElement("p");
+        p1.textContent=product.strMeal;
+
+        let p2= document.createElement("p");
+        p2.textContent=Math.floor(Math.random() * 400) + 100;
+
+        let btn= document.createElement("button");
+        btn.textContent="Add to Cart";
+        btn.addEventListener("click", function(){
+            cartItems(product.strMealThumb, product.strMeal,p2.textContent);
+        });
+
+        div.append(img,p1,p2,btn);
+        display.append(div);
+        }); 
+    }
+    
+    function cartItems(img,p1,p2){
+        cart.push(img,p1,p2);
+        let carts= localStorage.setItem("cart", JSON.stringify(cart));
+    }
+    
+    
+</script>
