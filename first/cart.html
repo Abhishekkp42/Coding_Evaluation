@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="display"></div>
+</body>
+</html>
+<script>
+    let cart= JSON.parse(localStorage.getItem("cart"));
+
+    function getData(arr){
+        arr.map(function(elem){
+            let div= document.createElement("div");
+
+        let img= document.createElement("img");
+        img.src= elem.img;
+
+        let p1= document.createElement("p");
+        p1.textContent=elem.strMeal;
+
+        let p2= document.createElement("p");
+        p2.textContent=Math.floor(Math.random() * 400) + 100;
+
+
+        div.append(img,p1,p2);
+        document.querySelector("#display").append(div);
+        })
+        
+        
+        }
+        getData();
+</script>
